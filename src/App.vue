@@ -1,32 +1,33 @@
 <template>
-  <ul>
-    <learning-resources v-for="res in storedResources" :key="res.id" :title="res.title" :description="res.description"
-                        :link="res.link">
-
-    </learning-resources>
-  </ul>
+  <v-header :title="'RememberMe'"></v-header>
+  <v-resourses></v-resourses>
 </template>
 
 <script>
 
-import LearningResources from "@/components/learning-resources/LearningResources";
+import VHeader from "@/components/layouts/VHeader";
+import VResourses from "@/components/learning-resources/VResourses";
 
 export default {
   components: {
-    LearningResources
+    VResourses,
+    VHeader,
   },
-  data() {
-    return {
-      storedResources: [
-        {
-          id: 'official-guide',
-          title: 'Official Guide',
-          description: 'Learn Vue by Official guide',
-          link: 'https://vuejs.org/guide/introduction.html'
-        },
-        {id: 'google', title: 'Google', description: 'Learn Vue by Google ...', link: 'https://www.google.com/'}
-      ]
-    }
-  }
 }
 </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+}
+</style>
