@@ -1,17 +1,26 @@
 <template>
+  <v-dialog v-if="inputIsInvalid" title="Invalid Input" @close-dialog="confirmError">
+    <template #default>
+      <p>Unfortunately, at least one input is invalid.</p>
+      <p>Please check all the inputs and make sure you enter at least a few characters into each input field</p>
+    </template>
+    <template #actions>
+      <v-button @click="confirmError" @keyup.esc="confirmError">Ok</v-button>
+    </template>
+  </v-dialog>
   <v-card>
-    <form>
+    <form @submit.prevent="createResource">
       <div class="form-control">
         <label for="title">Title</label>
-        <input id="title" name="title" type=text/>
+        <input v-model="title" id="title" name="title" type="text">
       </div>
       <div class="form-control">
         <label for="description">Description</label>
-        <textarea id="description" name="description" row="3"></textarea>
+        <textarea v-model="description" id="description" name="description" rows="3"></textarea>
       </div>
       <div class="form-control">
         <label for="link">Link</label>
-        <textarea id="link" name="link" type="url"></textarea>
+        <input v-model="link" id="link" name="link" type="url" />
       </div>
       <div class="form-control">
         <v-button type="submit">Add Resource</v-button>
@@ -23,10 +32,50 @@
 <script>
 import VCard from "@/components/UI/VCard";
 import VButton from "@/components/UI/VButton";
+import VDialog from "@/components/UI/VDialog";
 
 export default {
   name: 'add-resource',
-  components: {VButton, VCard},
+  components: {VDialog, VButton, VCard},
+  data() {
+    return {
+      title: '',
+      link: '',
+      description: '',
+      inputIsInvalid: false
+    }
+  },
+  inject: {
+    addResource: {
+      type: Function
+    }
+  },
+  methods: {
+    createResource() {
+      const resource = {
+        id: this.title.trim().toLowerCase().split(' ').join('-'),
+        title: this.title.trim(),
+        link: this.link.trim(),
+        description: this.description.trim()
+      }
+
+      if(!resource.title || !resource.link || !resource.description){
+        this.inputIsInvalid = true
+        return
+      }
+
+      this.addResource(resource)
+      this.resetData()
+    },
+    resetData() {
+      this.title = ''
+      this.link = ''
+      this.description = ''
+    },
+    confirmError() {
+      this.inputIsInvalid = false
+    }
+  }
 }
 </script>
 

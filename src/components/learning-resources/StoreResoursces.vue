@@ -1,7 +1,7 @@
 <template>
   <ul>
     <learning-resources v-for="res in resources" :key="res.id" :title="res.title" :description="res.description"
-                        :link="res.link">
+                        :link="res.link" :id="res.id">
 
     </learning-resources>
   </ul>

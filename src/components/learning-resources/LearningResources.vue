@@ -3,7 +3,7 @@
     <v-card>
       <header>
         <h3>{{ title }}</h3>
-        <v-button @click="deleteResource" :mode="'flat'">Delete</v-button>
+        <v-button @click="handleClick(id)" :mode="'flat'">Delete</v-button>
       </header>
       <p>{{ description }}</p>
       <nav>
@@ -32,11 +32,20 @@ export default {
     link: {
       type: String,
       required: true
+    },
+    id: {
+      type: String,
+      required: true
+    }
+  },
+  inject: {
+    deleteResource: {
+      type: Function
     }
   },
   methods: {
-    deleteResource() {
-      console.log('kek')
+    handleClick(id) {
+      this.deleteResource(id)
     }
   }
 }

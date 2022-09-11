@@ -3,7 +3,9 @@
     <v-button @click="setSelectedTab('store-resources')" :mode="storedResButtonMode">Stored Resources</v-button>
     <v-button @click="setSelectedTab('add-resource')" :mode="addResButtonMode">Add Resources</v-button>
   </v-card>
-  <component :is="selectedTab"></component>
+  <keep-alive>
+    <component :is="selectedTab"></component>
+  </keep-alive>
 </template>
 
 <script>
@@ -32,7 +34,9 @@ export default {
   },
   provide() {
     return {
-      resources: this.storedResources
+      resources: this.storedResources,
+      addResource: this.addResource,
+      deleteResource: this.deleteResource
     }
   },
   computed: {
@@ -46,6 +50,14 @@ export default {
   methods: {
     setSelectedTab(tab) {
       this.selectedTab = tab
+    },
+    addResource(resource) {
+      this.storedResources.push(resource)
+      this.selectedTab = 'store-resources'
+    },
+    deleteResource(id){
+      const resIndex = this.storedResources.findIndex(res => res.id === id)
+      this.storedResources.splice(resIndex,1)
     }
   }
 }
